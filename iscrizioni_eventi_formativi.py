@@ -12,33 +12,45 @@ def valida_cf(cf: str) -> bool:
     return bool(re.fullmatch(r"[A-Z0-9]{16}", cf))
 
 def ftp_connect():
-    host = st.secrets["FTP_HOST"]
-    user = st.secrets["FTP_USER"]
+    host = st.secrets["FTP_HOST"].strip()
+    user = st.secrets["FTP_USER"].strip()
     pwd  = st.secrets["FTP_PASS"]
     ftp = FTP(host, timeout=25)
     ftp.login(user=user, passwd=pwd)
     return ftp
 
-def ftp_cd_mkdirs(ftp: FTP, remote_dir: str):
-    # Cambia directory creando quelle mancanti (best effort)
-    remote_dir = remote_dir.strip("/")
-    if not remote_dir:
-        return
-    parts = remote_dir.split("/")
-    path_so_far = ""
-    for p in parts:
-        path_so_far = f"{path_so_far}/{p}" if path_so_far else p
+def ensure_and_cd(ftp: FTP, desired_path: str):
+    """
+    Entra nella cartella corretta creando step-by-step.
+    Se la root non è httpdocs, prova ad entrarci.
+    """
+    try:
+        cur = ftp.pwd()  # es. '/' oppure '/httpdocs'
+    except:
+        cur = "/"
+
+    # se non siamo in httpdocs, proviamo ad entrarci (se esiste)
+    try:
+        if "httpdocs" not in cur:
+            ftp.cwd("httpdocs")
+    except error_perm:
+        # ok: la root del tuo utente è già httpdocs
+        pass
+
+    # crea/entra nelle sottocartelle desiderate
+    for part in desired_path.strip("/").split("/"):
+        if not part:
+            continue
         try:
-            ftp.cwd(path_so_far)
+            ftp.cwd(part)
         except error_perm:
             try:
-                ftp.mkd(path_so_far)
-            except Exception:
-                pass
-            ftp.cwd(path_so_far)
+                ftp.mkd(part)
+                ftp.cwd(part)
+            except error_perm as e:
+                raise RuntimeError(f"Permessi insufficienti o path non valido su '{part}': {e}")
 
 def ftp_download_file(ftp: FTP, remote_path: str) -> bytes | None:
-    # Restituisce i bytes del file remoto, oppure None se non esiste
     bio = io.BytesIO()
     try:
         ftp.retrbinary(f"RETR {remote_path}", bio.write)
@@ -59,7 +71,6 @@ def append_row_to_csv_bytes(existing_bytes: bytes | None, row: dict) -> bytes:
             old_df = pd.read_csv(io.BytesIO(existing_bytes))
             df = pd.concat([old_df, new_df], ignore_index=True)
         except Exception:
-            # Se il file remoto è corrotto o vuoto, riparti dal nuovo
             df = new_df
     else:
         df = new_df
@@ -68,7 +79,6 @@ def append_row_to_csv_bytes(existing_bytes: bytes | None, row: dict) -> bytes:
     return out.getvalue()
 
 def standardizza_scela(x: str) -> str:
-    # rimuove doppie spaziature, uniforma
     return " ".join(x.strip().split())
 
 # ---------------------- UI ----------------------
@@ -144,7 +154,6 @@ if st.button("📩 Invia Iscrizione"):
     elif not consenso:
         st.error("⚠️ Devi acconsentire al trattamento dei dati per procedere.")
     else:
-        # Prepara record
         payload = {
             "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "Nome": standardizza_scela(nome),
@@ -160,44 +169,30 @@ if st.button("📩 Invia Iscrizione"):
             "Consenso": "SI"
         }
 
-        # Parametri remoti da st.secrets
-        REMOTE_DIR  = "IA/Corsi/IscrizioniPercorsiFormativi"
-        REMOTE_FILE = "iscrizioni.csv"
-        REMOTE_PATH = f"{REMOTE_DIR}/{REMOTE_FILE}"
+        # Parametri remoti
+        DESIRED_PATH = "IA/Corsi/IscrizioniPercorsiFormativi"
+        REMOTE_FILE  = "iscrizioni.csv"
 
         try:
             ftp = ftp_connect()
-            # Entra/crea directory
-            ftp_cd_mkdirs(ftp, REMOTE_DIR)
+            ensure_and_cd(ftp, DESIRED_PATH)          # auto-rileva httpdocs e crea path
+            st.caption(f"Percorso FTP attuale: {ftp.pwd()}")
 
             # Scarica CSV esistente (se c'è)
-            existing = None
-            try:
-                existing = ftp_download_file(ftp, REMOTE_FILE)
-            except Exception:
-                # Prova con path assoluto come fallback
-                existing = ftp_download_file(ftp, REMOTE_PATH)
+            existing = ftp_download_file(ftp, REMOTE_FILE)
 
             # Accoda riga e ottieni bytes aggiornati
             updated_bytes = append_row_to_csv_bytes(existing, payload)
 
-            # Carica file aggiornato (preferendo nome semplice: siamo già nella dir giusta)
-            try:
-                ftp_upload_file(ftp, REMOTE_FILE, updated_bytes)
-            except Exception:
-                # Fallback con percorso completo
-                ftp_upload_file(ftp, REMOTE_PATH, updated_bytes)
+            # Carica file aggiornato (siamo già nella dir giusta)
+            ftp_upload_file(ftp, REMOTE_FILE, updated_bytes)
 
             ftp.quit()
             st.success("✅ Iscrizione inviata e archiviata correttamente sul server.")
             st.info("Riceverai conferma dalla segreteria con i dettagli di accesso.")
         except Exception as e:
             st.error(f"❌ Errore durante l'archiviazione su server: {e}")
-            st.caption("Suggerimento: verifica host/utenza/password FTP e i permessi della cartella remota.")
+            st.caption("Suggerimento: verifica host/utenza/password FTP, che la root sia corretta e i permessi della cartella.")
 
 st.markdown("---")
-
 st.caption("I dati sensibili sono gestiti nel rispetto del GDPR. Archiviazione su server di proprietà (4step.it/Misterdomain) nella directory indicata. Accesso ristretto al Titolare/Responsabile.")
-
-
-
