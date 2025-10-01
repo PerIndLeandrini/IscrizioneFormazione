@@ -4,7 +4,7 @@ from datetime import datetime, date
 import re, os, io
 from ftplib import FTP, error_perm
 
-st.set_page_config(page_title="Iscrizione Corsi For.Te.", page_icon="📚", layout="centered")
+st.set_page_config(page_title="ISCRIZIONE PERCORSI FORMATIVI", page_icon="📚", layout="centered")
 
 # ---------------------- Utility ----------------------
 def valida_cf(cf: str) -> bool:
@@ -72,7 +72,7 @@ def standardizza_scela(x: str) -> str:
     return " ".join(x.strip().split())
 
 # ---------------------- UI ----------------------
-st.title("📚 Iscrizione ai Corsi di Formazione For.Te.")
+st.title("📚 ISCRIZIONE PERCORSI FORMATIVI")
 st.write("Compila il form per iscriverti ai moduli formativi. I moduli devono essere completati **entro il 30/11/2025**.")
 
 with st.sidebar:
@@ -198,4 +198,5 @@ if st.button("📩 Invia Iscrizione"):
 st.markdown("---")
 
 st.caption("I dati sensibili sono gestiti nel rispetto del GDPR. Archiviazione su server di proprietà (4step.it/Misterdomain) nella directory indicata. Accesso ristretto al Titolare/Responsabile.")
+
 
