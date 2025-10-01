@@ -188,11 +188,12 @@ if st.button("📩 Invia Iscrizione"):
             ftp_upload_file(ftp, REMOTE_FILE, updated_bytes)
 
             ftp.quit()
-            st.success("✅ Iscrizione inviata e archiviata correttamente sul server.")
-            st.info("Riceverai conferma dalla segreteria con i dettagli di accesso.")
+            st.success("✅ Iscrizione inviata e archiviata correttamente al server.")
+            st.info("La tua azienda provvederà a fornire tutti i dati necessari e le informazioni per lo svolgimento del corso")
         except Exception as e:
             st.error(f"❌ Errore durante l'archiviazione su server: {e}")
-            st.caption("Suggerimento: verifica host/utenza/password FTP, che la root sia corretta e i permessi della cartella.")
+            st.caption("VERIFICA I DATI INSERITI PRIMA DI INVIARE IL MODULO")
 
 st.markdown("---")
 st.caption("I dati sensibili sono gestiti nel rispetto del GDPR. Archiviazione su server di proprietà (4step.it/Misterdomain) nella directory indicata. Accesso ristretto al Titolare/Responsabile.")
+
