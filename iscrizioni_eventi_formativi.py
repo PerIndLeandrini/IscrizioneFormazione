@@ -161,7 +161,7 @@ if st.button("📩 Invia Iscrizione"):
         }
 
         # Parametri remoti da st.secrets
-        REMOTE_DIR  = "httpdocs/IA/Corsi/IscrizioniPercorsiFormativi"
+        REMOTE_DIR  = "IA/Corsi/IscrizioniPercorsiFormativi"
         REMOTE_FILE = "iscrizioni.csv"
         REMOTE_PATH = f"{REMOTE_DIR}/{REMOTE_FILE}"
 
@@ -198,5 +198,6 @@ if st.button("📩 Invia Iscrizione"):
 st.markdown("---")
 
 st.caption("I dati sensibili sono gestiti nel rispetto del GDPR. Archiviazione su server di proprietà (4step.it/Misterdomain) nella directory indicata. Accesso ristretto al Titolare/Responsabile.")
+
 
 
