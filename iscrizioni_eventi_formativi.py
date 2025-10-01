@@ -4,7 +4,7 @@ from datetime import datetime, date
 import re, os, io
 from ftplib import FTP, error_perm
 
-st.set_page_config(page_title="Iscrizione Percorsi Formativi", page_icon="📚", layout="centered")
+st.set_page_config(page_title="Iscrizione Corsi For.Te.", page_icon="📚", layout="centered")
 
 # ---------------------- Utility ----------------------
 def valida_cf(cf: str) -> bool:
@@ -198,3 +198,4 @@ if st.button("📩 Invia Iscrizione"):
 st.markdown("---")
 
 st.caption("I dati sensibili sono gestiti nel rispetto del GDPR. Archiviazione su server di proprietà (4step.it/Misterdomain) nella directory indicata. Accesso ristretto al Titolare/Responsabile.")
+
