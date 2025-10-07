@@ -97,7 +97,7 @@ st.subheader("👤 Dati del partecipante")
 c1, c2 = st.columns(2)
 with c1:
     nome = st.text_input("Nome", max_chars=60)
-    data_nascita = st.date_input("Data di nascita", value=date(1990,1,1), format="DD/MM/YYYY")
+    data_nascita = st.date_input("Data di nascita", value=date(1930,1,1), format="DD/MM/YYYY")
     codice_fiscale = st.text_input("Codice Fiscale (16 caratteri)", max_chars=16).upper()
 with c2:
     cognome = st.text_input("Cognome", max_chars=60)
@@ -196,4 +196,5 @@ if st.button("📩 Invia Iscrizione"):
 
 st.markdown("---")
 st.caption("I dati sensibili sono gestiti nel rispetto del GDPR. Archiviazione su server di proprietà (4step.it/Misterdomain) nella directory indicata. Accesso ristretto al Titolare/Responsabile.")
+
 
