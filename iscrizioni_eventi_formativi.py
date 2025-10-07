@@ -136,12 +136,18 @@ mod2b = st.radio("**Modulo 2 – Rischi Specifici DVR (Parte 2)**",
 st.markdown("---")
 st.subheader("🔐 Informativa sintetica & Consenso")
 st.markdown("""
-**Titolare del trattamento**: [Il tuo nome/Studio].  
+**Titolare del trattamento**: 
+[Per.Ind. Simone Leandrini - Sicurezza e Salute nei luoghi di lavoro ed attività formative per le imprese - 
+HSE Manager Operativo UNI EN 11720 Nr.15-24 - Docente qualificato AIFECS REG1-7RCKt4 - Consulenza alle imprese - 
+servizi professionali standard tecnici UNI EN ISO 9001:2015, UNI EN ISO 45001:2023, UNI EN ISO 14001:2015 - 
+Data Protection Officer (RDPO GDPR reg.UE 679/16), Google Developer, iAuditor Developer, COVID MANAGER KHC TEC-ISO 17024].  
+
 **Finalità**: gestione iscrizioni, erogazione corsi, emissione attestati, adempimenti normativi (D.Lgs. 81/08, Accordi Stato-Regioni).  
+
 **Base giuridica**: adempimenti di legge/obblighi formativi.  
 **Conservazione**: per il tempo necessario a dimostrare la formazione svolta e in conformità alle norme vigenti.  
 **Diritti**: accesso, rettifica, limitazione, ecc. (artt. 15-22 GDPR).  
-**Contatti**: [tua email].
+**Contatti**: [perindleandrini@4step.it].
 """)
 consenso = st.checkbox("✅ Dichiaro di aver letto l'informativa e acconsento al trattamento per le finalità indicate.")
 
@@ -202,6 +208,7 @@ if st.button("📩 Invia Iscrizione"):
 
 st.markdown("---")
 st.caption("I dati sensibili sono gestiti nel rispetto del GDPR. Archiviazione su server di proprietà (4step.it/Misterdomain) nella directory indicata. Accesso ristretto al Titolare/Responsabile.")
+
 
 
 
