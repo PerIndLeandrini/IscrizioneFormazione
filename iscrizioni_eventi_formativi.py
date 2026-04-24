@@ -89,7 +89,7 @@ with st.sidebar:
     st.header("ℹ️ Info rapide")
     st.markdown("""
 - Modalità: **Aula** e **FAD (videoconferenza)**
-- Scadenza: **30/11/2025**
+- Scadenza: **30/06/2026**
 - Dopo l'invio, i dati sono archiviati **in modo centralizzato** sul nostro server.
 """)
 
