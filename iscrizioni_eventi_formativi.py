@@ -83,7 +83,7 @@ def standardizza_scela(x: str) -> str:
 
 # ---------------------- UI ----------------------
 st.title("📚 ISCRIZIONE PERCORSI FORMATIVI")
-st.write("Compila il form per iscriverti ai moduli formativi. I moduli devono essere completati **entro il 30/11/2025**.")
+st.write("Compila il form per iscriverti ai moduli formativi. I moduli devono essere completati **entro il 30/06/2026**.")
 
 with st.sidebar:
     st.header("ℹ️ Info rapide")
