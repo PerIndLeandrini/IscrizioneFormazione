@@ -116,21 +116,15 @@ st.markdown("---")
 st.subheader("🗓️ Selezione date dei moduli")
 
 mod1 = st.radio("**Modulo 1 – Giuridico Normativo**",
-                ["16 Ottobre (16:00-18:00)",
-                 "17 Ottobre (16:00-18:00)",
-                 "23 Ottobre (16:00-18:00)"],
+                ["Modulo che verrà favorito in modalità E-learing"],
                 index=0)
 
 mod2a = st.radio("**Modulo 2 – Rischi Specifici DVR (Parte 1)**",
-                 ["24 Ottobre (16:00-18:00)",
-                  "30 Ottobre (16:00-18:00)",
-                  "6 Novembre (16:00-18:00)"],
+                 ["Modulo che verrà favorito in modalità E-learing"],
                  index=0)
 
 mod2b = st.radio("**Modulo 2 – Rischi Specifici DVR (Parte 2)**",
-                 ["13 Novembre (16:00-18:00)",
-                  "14 Novembre (16:00-18:00)",
-                  "20 Novembre (16:00-18:00)"],
+                 ["Modulo che verrà favorito in modalità E-learing"],
                  index=0)
 
 st.markdown("---")
